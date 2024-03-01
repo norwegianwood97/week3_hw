@@ -1,0 +1,35 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model categories {
+  Id                Int      @id @default(autoincrement()) @map("categoriesId")
+  name              String 
+  order             Int
+  menus             menus[]
+
+  @@map("categories")
+}
+
+model menus {
+  Id                 Int      @id @default(autoincrement()) @map("menusId")
+  categoriesId       Int      @map("categoriesId")
+  name               String?   @map("name")
+  description        String  @map("description")
+  image              String   @map("image")
+  price              Int      @map("price")
+  status             String?  @default("FOR_SALE")
+  order              Int
+
+  categories categories @relation(fields: [categoriesId], references: [Id], onDelete: Cascade)
+
+  @@map("menus")
+}
+
