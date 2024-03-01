@@ -59,15 +59,20 @@ router.post(
 router.get(
   '/', async (req, res, next) => {
     try{
+      const categoryId = parseInt(req.params.categoryId);
+
       // categoryId에 해당하는 카테고리 존재 여부 확인
       const existingCategory = await prisma.categories.findUnique({
-        where: { Id: +req.params.categoryId },
+        where: { Id: categoryId },
       });
       if (!existingCategory) {
         return res.status(404).json({ message: '존재하지 않는 카테고리입니다.' });
       }
     
       const showmenu = await prisma.menus.findMany({
+        where: {
+          categoriesId: categoryId, 
+        },
         select: {
           Id: true,
           name: true,
