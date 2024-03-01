@@ -1,63 +1,28 @@
-// src/routes/posts.router.js
-
 import express from 'express';
 import { prisma } from '../utils/prisma/index.js';
 
 const router = express.Router();
 
-/** 게시글 생성 API **/
-router.post('/posts', async (req, res, next) => {
-  const { userId } = req.user;
-  const { title, content } = req.body;
+// 카테고리 등록 API
+router.post('/categories', async (req, res) => {
+  
+  const {name} = req.body
 
-  const post = await prisma.posts.create({
+
+  if (!name) {
+    return res.status(200).json({errerMessage: "데이터 형식이 올바르지 않습니다." })
+  }
+
+  const newCategory = await prisma.categories.create({ // 새 카테고리 생성
     data: {
-      userId: +userId,
-      title,
-      content,
+        id: id,
+        name: name,
+        order: order,
     },
-  });
-
-  return res.status(201).json({ data: post });
+});
+return res.status(200).json({ message: "카텍고리를 등록하였습니다." });
 });
 
-/** 게시글 목록 조회 API **/
-router.get('/posts', async (req, res, next) => {
-    const posts = await prisma.posts.findMany({
-      select: {
-        postId: true,
-        userId: true,
-        title: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-      orderBy: {
-        createdAt: 'desc', // 게시글을 최신순으로 정렬합니다.
-      },
-    });
-  
-    return res.status(200).json({ data: posts });
-  });
-
-/** 게시글 상세 조회 API **/
-router.get('/posts/:postId', async (req, res, next) => {
-    const { postId } = req.params;
-    const post = await prisma.posts.findFirst({
-      where: {
-        postId: +postId,
-      },
-      select: {
-        postId: true,
-        userId: true,
-        title: true,
-        content: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
-  
-    return res.status(200).json({ data: post });
-  });
 
 
 export default router;
