@@ -10,7 +10,7 @@ datasource db {
 }
 
 model categories {
-  Id                Int      @id @default(autoincrement()) @map("categoriesId")
+  Id                Int      @id @default(autoincrement()) @map("categoryId")
   name              String   @map("name")
   order             Int      @map("order")
   menus             menus[]
@@ -19,8 +19,8 @@ model categories {
 }
 
 model menus {
-  Id                 Int      @id @default(autoincrement()) @map("menusId")
-  categoriesId       Int      @map("categoriesId")
+  Id                 Int      @id @default(autoincrement()) @map("menuId")
+  categoryId         Int      @map("categoryId")
   name               String   @map("name")
   name               String   @map("name")
   description        String   @map("description")

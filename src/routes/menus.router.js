@@ -5,6 +5,7 @@ import { prisma } from '../utils/prisma/index.js';
 
 const router = express.Router({mergeParams: true});
 
+
 /**메뉴 생성 API **/
 router.post(
   '/', async (req, res, next) => {
@@ -43,7 +44,7 @@ router.post(
           description,
           image,
           price,
-          categoriesId: parseInt(categoryId),
+          categoryId: parseInt(categoryId),
           order : newOrder 
         }
       });
@@ -55,7 +56,7 @@ router.post(
   }
 );
 
-/** 메뉴 조회 API **/
+/** 카테고리속 모든 메뉴 조회 API **/
 router.get(
   '/', async (req, res, next) => {
     try{
@@ -71,7 +72,7 @@ router.get(
     
       const showmenu = await prisma.menus.findMany({
         where: {
-          categoriesId: categoryId, 
+          categoryId: categoryId, 
         },
         select: {
           Id: true,
@@ -92,5 +93,47 @@ router.get(
       return res.status(500).json({ })
     }
   });
+
+/** 특정 메뉴 조회 API **/
+router.get(
+  '/:menuId', async (req, res, next) => {
+    try{
+      const categoryId = parseInt(req.params.categoryId);
+      const menuId = parseInt(req.params.menuId)
+
+      // categoryId에 해당하는 카테고리 존재 여부 확인
+      const existingCategory = await prisma.categories.findUnique({
+        where: { Id: categoryId },
+      });
+      if (!existingCategory) {
+        return res.status(404).json({ message: '존재하지 않는 카테고리입니다.' });
+      }
+    
+      const showmenu = await prisma.menus.findMany({
+        where: {
+          categoryId: categoryId, 
+          Id: menuId
+        },
+        select: {
+          Id: true,
+          name: true,
+          image: true,
+          price: true,
+          order: true,
+          status: true
+        },
+        orderBy: {
+          order: 'desc', // 게시글을 최신순으로 정렬합니다.
+        },
+      });
+
+  
+      return res.status(200).json({ data: showmenu });
+    }catch(error){
+      return res.status(500).json({ })
+    }
+  });
+
+
 
 export default router;
