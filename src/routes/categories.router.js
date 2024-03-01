@@ -82,7 +82,27 @@ router.patch('/:categoryId', async (req, res) => {
 
 });
 
+router.delete('/:categoryId', async (req, res) => {
+  const {categoryId} = req.params;
 
+  const findId = await prisma.categories.findUnique({
+    where: {
+      Id: +categoryId
+    }
+  });
+
+  if (!findId){
+    return res.status(404).json({ message: "존재하지 않는 카테고리 입니다." })
+  }
+
+
+  await prisma.categories.delete({
+    where: {
+        Id: +categoryId
+    }
+  });
+  return res.status(200).json({ message: '카테고리 정보를 삭제하였습니다.'})
+})
 
 
 
