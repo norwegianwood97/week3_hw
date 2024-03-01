@@ -47,6 +47,11 @@ router.get('/', async (req, res) => {
 
 });
 
+// 카테고리 정보 변경 API
+router.get('/:categoryId', async (req, res) => {
+  
+})
+
 
 
 
