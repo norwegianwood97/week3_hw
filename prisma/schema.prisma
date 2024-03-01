@@ -22,16 +22,13 @@ model menus {
   Id                 Int      @id @default(autoincrement()) @map("menuId")
   categoryId         Int      @map("categoryId")
   name               String   @map("name")
-  name               String   @map("name")
   description        String   @map("description")
   image              String   @map("image")
   price              Int      @map("price")
   status             String   @default("FOR_SALE")
   order              Int      @map("order")
-  status             String   @default("FOR_SALE")
-  order              Int      @map("order")
 
-  categories categories @relation(fields: [categoriesId], references: [Id], onDelete: Cascade)
+  categories categories @relation(fields: [categoryId], references: [Id], onDelete: Cascade)
 
   @@map("menus")
 }
