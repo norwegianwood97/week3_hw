@@ -20,7 +20,7 @@ router.post('/categories', async (req, res) => {
         order: order,
     },
 });
-return res.status(200).json({ message: "카텍고리를 등록하였습니다." });
+return res.status(200).json({ message: "카테고리를 등록하였습니다." });
 });
 
 
