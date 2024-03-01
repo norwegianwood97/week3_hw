@@ -173,7 +173,7 @@ router.patch(
           Id : menuId,
           categoryId : categoryId
         },
-        data: {
+        data: { // 매니저님 한테 물어보기
           ...(name && { name }),
           ...(description && { description }),
           ...(price !== undefined && { price }),
