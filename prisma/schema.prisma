@@ -12,21 +12,20 @@ datasource db {
 model categories {
   Id                Int      @id @default(autoincrement()) @map("categoriesId")
   name              String 
-  order             Int
-  menus             menus[]
-
+  order             Int      @default(autoincrement())
+  menus             menus[]   
   @@map("categories")
 }
 
 model menus {
   Id                 Int      @id @default(autoincrement()) @map("menusId")
   categoriesId       Int      @map("categoriesId")
-  name               String?   @map("name")
-  description        String  @map("description")
+  name               String?  @map("name")
+  description        String   @map("description")
   image              String   @map("image")
   price              Int      @map("price")
   status             String?  @default("FOR_SALE")
-  order              Int
+  order              Int      @default(autoincrement())
 
   categories categories @relation(fields: [categoriesId], references: [Id], onDelete: Cascade)
 
