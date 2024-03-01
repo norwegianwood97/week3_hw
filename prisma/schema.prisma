@@ -22,9 +22,12 @@ model menus {
   Id                 Int      @id @default(autoincrement()) @map("menusId")
   categoriesId       Int      @map("categoriesId")
   name               String   @map("name")
+  name               String   @map("name")
   description        String   @map("description")
   image              String   @map("image")
   price              Int      @map("price")
+  status             String   @default("FOR_SALE")
+  order              Int      @map("order")
   status             String   @default("FOR_SALE")
   order              Int      @map("order")
 
