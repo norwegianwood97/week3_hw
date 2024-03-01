@@ -12,6 +12,8 @@ router.post('/categories', async (req, res) => {
       return res.status(400).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
     }
 
+    
+
     await prisma.categories.create({
       data: {
         name: name,
