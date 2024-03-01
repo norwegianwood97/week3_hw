@@ -61,6 +61,7 @@ router.get(
   '/', async (req, res, next) => {
     try{
       const categoryId = parseInt(req.params.categoryId);
+      
 
       // categoryId에 해당하는 카테고리 존재 여부 확인
       const existingCategory = await prisma.categories.findUnique({
@@ -70,6 +71,7 @@ router.get(
         return res.status(404).json({ message: '존재하지 않는 카테고리입니다.' });
       }
     
+      
       const showmenu = await prisma.menus.findMany({
         where: {
           categoryId: categoryId, 
@@ -90,7 +92,8 @@ router.get(
   
       return res.status(200).json({ data: showmenu });
     }catch(error){
-      return res.status(500).json({ })
+      console.error("오류 원인: ", error);
+      return res.status(500).json({ });
     }
   });
 
@@ -109,6 +112,14 @@ router.get(
         return res.status(404).json({ message: '존재하지 않는 카테고리입니다.' });
       }
     
+      // 해당 메뉴가 존재하지 않음
+      const existingMenu = await prisma.menus.findUnique({
+        where: {Id: menuId}
+      });
+      if(!existingMenu) {
+        return res.status(404).json({ message: '존재하지 않는 메뉴입니다.'});
+      }
+
       const showmenu = await prisma.menus.findMany({
         where: {
           categoryId: categoryId, 
